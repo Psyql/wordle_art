@@ -1,13 +1,14 @@
-goal = """BYBYB
-YYYYY
-YYYYY
-BYYYB
-BBYBB
+goal = """BYBGB
+YGYYY
+YGYYY
+BYYGB
+BBGBB
 BBBBB
 """
 
 def main():
-    wotd = input("Enter the Word of the Day: ").strip().upper()
+    #wotd = input("Enter the Word of the Day: ").strip().upper()
+    wotd = "MODAL"
 
     if len(wotd) != 5:
         print("The Word of the Day must be exactly 5 letters long.")
@@ -88,29 +89,35 @@ def read_word_list():
         return [line.strip().upper() for line in file if len(line.strip()) == 5]
     
 def display(word, wotd):
-    output = ""
+    output = ["B"] * 5
     occurences = {}
+
+    # process green letters first
     for pos, letter in enumerate(word):
         if word[pos] == wotd[pos]:
-            output += "G"
+            output[pos] = "G"
+            if letter not in occurences.keys():
+                occurences[letter] = 1
+            else:
+                occurences[letter] += 1
 
-        elif letter in wotd:
+    for pos, letter in enumerate(word):
+        if output[pos] == "G":
+            continue
+
+        if letter in wotd:
             if letter not in occurences.keys():
                 occurences[letter] = 0
 
             if occurences[letter] < wotd.count(letter):
-                output += "Y"
-            else:
-                output += "B"
-        else:
-            output += "B"
+                output[pos] = "Y"
         
         if letter in occurences.keys():
             occurences[letter] += 1
         else:
             occurences[letter] = 1
 
-    return output
+    return "".join(output)
 
 if __name__ == "__main__":
     main()
